@@ -8,9 +8,11 @@ class Core:
     def __init__( self ):
         pygame.init()
 
+        # setup pygame objects
         self.clock = pygame.time.Clock()
         self.display = pygame.display
 
+        # read configuration file
         self.width = config[ 'screen' ][ 'width' ]
         self.height = config[ 'screen' ][ 'height' ]
         self.fullscreen = config[ 'screen' ][ 'fullscreen']
@@ -22,6 +24,7 @@ class Core:
             # seems a bit hacky to me
             arg = 0
 
+        # initialize configuration to display
         self.screen = self.display.set_mode( ( self.width, self.height ), arg )
 
         # describes the movement of the player
@@ -33,7 +36,7 @@ class Core:
         self.mov_sprites = pygame.sprite.Group()
 
         # create player at { 0, 0 }
-        # { 0, 0 } means the center
+        # { 0, 0 } means the center of the display
         self.player = Player( 0, 0 )
         self.mov_sprites.add( self.player )
 
@@ -46,6 +49,9 @@ class Core:
         self.isUp = False
         self.isDown = False
 
+        # flags for menus
+        self.showFPS = False
+
     # the game loop
     def run( self ):
         while True:
@@ -55,6 +61,13 @@ class Core:
                 if event.type == pygame.QUIT:
                     # if true, leave loop
                     return
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_g:
+                        if self.showFPS:
+                            self.showFPS = False
+                        else:
+                            self.showFPS = True
+
 
             # handle hold down key events
             # else will be fired every time the key isn't pressed
@@ -120,9 +133,22 @@ class Core:
             # update player animation
             self.mov_sprites.update( self.direction, self.movement_scroll_x, self.movement_scroll_y )
 
+            # show fps counter
+            if self.showFPS:
+                self.show_fps()
+
             # update the whole display
             self.display.flip()
 
             # set targeted framerate to 60
             # be careful changing this because all animations are bound to this (!)
             self.clock.tick( 60 )
+
+    # blits fps to screen if flag showFPS is true
+    def show_fps( self ):
+        font = pygame.font.SysFont( 'Courier', 24, bold=True )
+        fps = str( int( self.clock.get_fps() ) )
+        fps_text = font.render( fps, 1, pygame.Color( 'black' ) )
+        
+        self.screen.blit( fps_text, ( 10, 0 ) )
+
