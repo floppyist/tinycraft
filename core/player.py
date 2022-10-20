@@ -11,7 +11,7 @@ class Player( pygame.sprite.Sprite ):
         self.sprites_current = []
 
         # load spritesheet
-        self.spritesheet = SpritesheetManager( 'sprites/player_walk.png', 4, 8 )
+        self.spritesheet = SpritesheetManager( 'sprites/player.png', 4, 8 )
 
         self.sprites_idle = []
         self.sprites_idle.append( self.spritesheet.get_image( 0, 0 ) )
