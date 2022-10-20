@@ -1,30 +1,30 @@
-# Tinycraft
+# **Tinycraft**
 
-## 1. Introduction
+## **Introduction**
 Tinycraft is an RPG made with PyGame.
 
-## 2. Requirements
+## **Requirements**
+pygame
 
-## 3. Installation
+## **Installation**
 
-1. clone repository
+1\. Clone repository
 ```bash
 git clone https://github.com/floppyist/tinycraft.git .
 ```
 
-2. change directory & rename config.json.dist
+2\. Change directory & rename config.json.dist
 ```bash
 cd tinycraft/etc/
 mv config.json.dist config.json
 ```
 
-3. change directory back to project root
+3\. Change directory back to project root
 ```bash
 cd ../../
 ```
 
-4. run tinycraft
+4\. Run Tinycraft
 ```bash
 ./main.py
 ```
-
