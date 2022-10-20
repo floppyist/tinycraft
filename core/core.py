@@ -8,7 +8,7 @@ from core.direction import Direction
 class Core:
     def __init__( self ):
         pygame.init()
-        pygame.mouse.set_visible( False )
+        #pygame.mouse.set_visible( False )
 
         # setup pygame objects
         self.clock = pygame.time.Clock()
@@ -21,7 +21,7 @@ class Core:
 
         # FIXME: need better config processing
         if self.fullscreen:
-            arg = pygame.FULLSCREEN    
+            arg = pygame.FULLSCREEN
         else:
             # seems a bit hacky to me
             arg = 0
@@ -55,6 +55,7 @@ class Core:
         self.isDown = False
 
         # flags for menus
+        self.showConsole = False
         self.showFPS = False
 
     # the game loop
@@ -74,6 +75,13 @@ class Core:
                             self.showFPS = False
                         else:
                             self.showFPS = True
+                    if event.key == pygame.K_PLUS:
+                        # switch for console
+                        # TODO: not finished, console will open with showFPS-flag
+                        if self.showConsole:
+                            self.showConsole = False
+                        else:
+                            self.showConsole = True
 
             self.gui_manager.process_events( event )
 
@@ -166,3 +174,6 @@ class Core:
         self.gui_manager.update( time_delta )
         self.gui_manager.set_lbl_fpsclock_text( fps )
         self.gui_manager.draw_ui( self.screen )
+
+    #def show_console( self, time_delta ):
+
