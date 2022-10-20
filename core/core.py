@@ -83,7 +83,7 @@ class Core:
                         else:
                             self.showConsole = True
 
-            self.gui_manager.process_events( event )
+                self.gui_manager.process_events( event )
 
             # handle hold down key events
             # else will be fired every time the key isn't pressed
