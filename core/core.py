@@ -1,12 +1,14 @@
 import pygame
 
 from core.config import config
+from core.gui.gui import GUI
 from core.player import Player
 from core.direction import Direction
 
 class Core:
     def __init__( self ):
         pygame.init()
+        pygame.mouse.set_visible( False )
 
         # setup pygame objects
         self.clock = pygame.time.Clock()
@@ -19,13 +21,16 @@ class Core:
 
         # FIXME: need better config processing
         if self.fullscreen:
-            arg = pygame.FULLSCREEN
+            arg = pygame.FULLSCREEN    
         else:
             # seems a bit hacky to me
             arg = 0
 
         # initialize configuration to display
         self.screen = self.display.set_mode( ( self.width, self.height ), arg )
+
+        # add GUI manager
+        self.gui_manager = GUI( ( self.width, self.height ) )
 
         # describes the movement of the player
         # will increased based on [W][A][S][D]-buttons
@@ -61,13 +66,16 @@ class Core:
                 if event.type == pygame.QUIT:
                     # if true, leave loop
                     return
+                # handler for keydown-events
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_g:
+                    if event.key == pygame.K_HASH:
+                        # switch for fps clock
                         if self.showFPS:
                             self.showFPS = False
                         else:
                             self.showFPS = True
 
+            self.gui_manager.process_events( event )
 
             # handle hold down key events
             # else will be fired every time the key isn't pressed
@@ -131,24 +139,30 @@ class Core:
             self.mov_sprites.draw( self.screen )
 
             # update player animation
-            self.mov_sprites.update( self.direction, self.movement_scroll_x, self.movement_scroll_y )
+            self.mov_sprites.update( self.direction )
 
             # show fps counter
             if self.showFPS:
-                self.show_fps()
+                self.show_fps( self.time_delta / 1000 )
 
             # update the whole display
-            self.display.flip()
+            # the update function also enables us to refresh single rectangles by
+            # passing them through arguements
+            self.display.update()
 
             # set targeted framerate to 60
             # be careful changing this because all animations are bound to this (!)
-            self.clock.tick( 60 )
+            # only use clock.tick once, because clock will not work correctly
+            self.time_delta = self.clock.tick( 60 )
 
     # blits fps to screen if flag showFPS is true
-    def show_fps( self ):
+    def show_fps( self, time_delta ):
+        # set specific font
         font = pygame.font.SysFont( 'Courier', 24, bold=True )
-        fps = str( int( self.clock.get_fps() ) )
-        fps_text = font.render( fps, 1, pygame.Color( 'black' ) )
         
-        self.screen.blit( fps_text, ( 10, 0 ) )
+        # get fps from clock function and put it into fps variable as string 
+        fps = str( round( self.clock.get_fps() ) )
 
+        self.gui_manager.update( time_delta )
+        self.gui_manager.set_lbl_fpsclock_text( fps )
+        self.gui_manager.draw_ui( self.screen )

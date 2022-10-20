@@ -83,7 +83,7 @@ class Player( pygame.sprite.Sprite ):
         # positioning rect
         self.rect.topleft = [ x + pos_x, y - pos_y ]
 
-    def update( self, direction, movement_scroll_x, movement_scroll_y ):
+    def update( self, direction ):
             if self.is_animating == True:
                 # use a low number which will converted to int later which produces the
                 # following logic: { 0.x -> 0 | 1.x -> 1 }

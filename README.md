@@ -4,7 +4,8 @@
 Tinycraft is an RPG made with PyGame.
 
 ## **Requirements**
-pygame
+* pygame
+* pygame_gui
 
 ## **Installation**
 
