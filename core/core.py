@@ -1,9 +1,12 @@
 import pygame
+import pygame_gui
 
 from core.config import config
 from core.gui.gui import GUI
 from core.player import Player
+from core.npc import NPC
 from core.direction import Direction
+from core.gui.command import Command
 
 class Core:
     def __init__( self ):
@@ -39,7 +42,11 @@ class Core:
         # these groups are layered by there initialization
         # TODO: for world building put the drawings before items, characters and so on
         # create sprite array to draw them together
+        self.npc_sprites = pygame.sprite.Group()
         self.mov_sprites = pygame.sprite.Group()
+
+        self.npc = NPC( 50, 50 )
+        self.npc_sprites.add( self.npc )
 
         # create player at { 0, 0 }
         # { 0, 0 } means the center of the display
@@ -54,12 +61,6 @@ class Core:
         self.isRight = False
         self.isUp    = False
         self.isDown  = False
-
-        # flags for menus
-        # TODO: put this into the gui manager
-        # self.isMenuShown = False
-        #self.showConsole = False
-        #self.showFPS     = False
 
     # the game loop
     def run( self ):
@@ -85,12 +86,18 @@ class Core:
                     if event.key == pygame.K_PLUS:
                         # switch for console
                         # TODO: not finished, console will open with showFPS-flag
+                        # FIXME: if console is closed by [x] it will still handled like shown
                         if self.gui_manager.console.visible:
                             self.gui_manager.console.hide()
                         else:
                             self.gui_manager.console.show()
+                
+                if event.type == pygame_gui.UI_CONSOLE_COMMAND_ENTERED:
+                    # TODO: define command handling here
+                    print( event.command )
 
                 # after checking necessary events process all gui events
+                # must be processed after key events to make console work properly
                 self.gui_manager.process_events( event )
 
             # lock movement if a menu is opened
@@ -100,8 +107,7 @@ class Core:
                 self.player.animate( False )
             else:
                 # handle hold down key events
-                # else will be fired every time the key isn't pressed
-                # makes the controls feel soft
+                # else will be fired if no menu is opened
                 keys = pygame.key.get_pressed()
 
                 if keys[ pygame.K_a ]:
@@ -159,11 +165,12 @@ class Core:
             # TODO: need world design
             self.screen.fill( ( 34, 139, 34 ) )
 
-            # draw all sprites which are part of the array
-            self.mov_sprites.draw( self.screen )
+            self.npc_sprites.update( self.direction, self.movement_scroll_x, self.movement_scroll_y )
+            self.npc_sprites.draw( self.screen )
 
-            # update player animation
+            # update and draw all sprites in list
             self.mov_sprites.update( self.direction )
+            self.mov_sprites.draw( self.screen )
 
             # set targeted framerate to 60
             # be careful changing this because all animations are bound to this (!)
@@ -171,10 +178,12 @@ class Core:
             self.time_delta = self.clock.tick( 60 )
 
             # update text
+            # TODO: this should be done is manager class
             self.gui_manager.fpsclock.set_text( fps )
-            
-            self.gui_manager.draw_ui( self.screen )
+
+            # update and draw all ui elements
             self.gui_manager.update( self.time_delta / 1000 )
+            self.gui_manager.draw_ui( self.screen )
 
             # update the whole display
             # the update function also enables us to refresh single rectangles by
