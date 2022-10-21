@@ -8,7 +8,6 @@ from core.direction import Direction
 class Core:
     def __init__( self ):
         pygame.init()
-        pygame.mouse.set_visible( False )
 
         # setup pygame objects
         self.clock   = pygame.time.Clock()
@@ -59,12 +58,14 @@ class Core:
         # flags for menus
         # TODO: put this into the gui manager
         # self.isMenuShown = False
-        self.showConsole = False
-        self.showFPS     = False
+        #self.showConsole = False
+        #self.showFPS     = False
 
     # the game loop
     def run( self ):
         while True:
+            fps = str( round( self.clock.get_fps() ) )
+
             # event handling needs a seperate object
             # some basic event handling
             for event in pygame.event.get():
@@ -76,31 +77,24 @@ class Core:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_HASH:
                         # switch for fps clock
-                        if self.showFPS:
-                            pygame.mouse.set_visible( False )
-                            self.gui_manager.isUIShown = False
-                            self.showFPS = False
-                        else:
-                            # just show mouse if terminal is opened
-                            pygame.mouse.set_visible( True )
-                            self.gui_manager.isUIShown = True
-                            self.showFPS = True
+                        if self.gui_manager.fpsclock.visible:
+                            self.gui_manager.fpsclock.hide()
+                        else:            
+                            self.gui_manager.fpsclock.show()
                             
                     if event.key == pygame.K_PLUS:
                         # switch for console
                         # TODO: not finished, console will open with showFPS-flag
-                        if self.showConsole:
-                            self.gui_manager.isUIShown = False
-                            self.showConsole = False
+                        if self.gui_manager.console.visible:
+                            self.gui_manager.console.hide()
                         else:
-                            self.gui_manager.isUIShown = True
-                            self.showConsole = True
+                            self.gui_manager.console.show()
 
                 # after checking necessary events process all gui events
                 self.gui_manager.process_events( event )
 
             # lock movement if a menu is opened
-            if self.gui_manager.isUIShown:
+            if self.gui_manager.isActive():
                 # disable animation if menu is shown otherwise opening a menu while an animation
                 # is running will still playing these
                 self.player.animate( False )
@@ -176,17 +170,9 @@ class Core:
             # only use clock.tick once, because clock will not work correctly otherwise
             self.time_delta = self.clock.tick( 60 )
 
-            # show fps counter
-            if self.showFPS:
-                # get fps from clock function and put it into fps variable as string 
-                fps = str( round( self.clock.get_fps() ) )
-                # update text
-                self.gui_manager.fpsclock.set_text( fps )
-                self.gui_manager.fpsclock.show()
-
-            if self.showConsole:
-                self.gui_manager.console.show()
-
+            # update text
+            self.gui_manager.fpsclock.set_text( fps )
+            
             self.gui_manager.draw_ui( self.screen )
             self.gui_manager.update( self.time_delta / 1000 )
 
