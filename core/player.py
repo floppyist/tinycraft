@@ -87,32 +87,32 @@ class Player( pygame.sprite.Sprite ):
         self.rect.topleft = [ x, y ]
 
     def update( self, direction ):
-            if self.is_animating == True:
-                # use a low number which will converted to int later which produces the
-                # following logic: { 0.x -> 0 | 1.x -> 1 }
-                self.animation_step += 0.15
+        if self.is_animating == True:
+            # use a low number which will converted to int later which produces the
+            # following logic: { 0.x -> 0 | 1.x -> 1 }
+            self.animation_step += 0.15
                 
-                if self.animation_step >= len( self.sprites_current ):
-                    self.animation_step = 0
+            if self.animation_step >= len( self.sprites_current ):
+                self.animation_step = 0
             
-            if direction == Direction.WEST:
-                self.sprites_current = self.sprites_walk_west
-            if direction == Direction.EAST:
-                self.sprites_current = self.sprites_walk_east
-            if direction == Direction.NORTH:
-                self.sprites_current = self.sprites_walk_north
-            if direction == Direction.SOUTH:
-                self.sprites_current = self.sprites_walk_south
-            if direction == Direction.NORTHWEST:
-                self.sprites_current = self.sprites_walk_northwest
-            if direction == Direction.NORTHEAST:
-                self.sprites_current = self.sprites_walk_northeast
-            if direction == Direction.SOUTHWEST:
-                self.sprites_current = self.sprites_walk_southwest
-            if direction == Direction.SOUTHEAST:
-                self.sprites_current = self.sprites_walk_southeast
+        if direction == Direction.WEST:
+            self.sprites_current = self.sprites_walk_west
+        if direction == Direction.EAST:
+            self.sprites_current = self.sprites_walk_east
+        if direction == Direction.NORTH:
+            self.sprites_current = self.sprites_walk_north
+        if direction == Direction.SOUTH:
+            self.sprites_current = self.sprites_walk_south
+        if direction == Direction.NORTHWEST:
+            self.sprites_current = self.sprites_walk_northwest
+        if direction == Direction.NORTHEAST:
+            self.sprites_current = self.sprites_walk_northeast
+        if direction == Direction.SOUTHWEST:
+            self.sprites_current = self.sprites_walk_southwest
+        if direction == Direction.SOUTHEAST:
+            self.sprites_current = self.sprites_walk_southeast
 
-            self.image = self.sprites_current[ int( self.animation_step ) ]
+        self.image = self.sprites_current[ int( self.animation_step ) ]
 
     def animate( self, is_animating ):
         self.is_animating = is_animating

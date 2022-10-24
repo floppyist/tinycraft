@@ -52,10 +52,10 @@ class Core:
         self.player = Player( 0, 0 )
         self.player_sprites.add( self.player )
 
-        self.npc = NPC( 100, 100 )
-        self.npc_sprites.add( self.npc )
+        #self.npc = NPC( 2, 2 )
+        #self.npc_sprites.add( self.npc )
         
-        self.world = World( self.player.get_world_x(), self.player.get_world_y(), 3 )
+        self.world = World( self.player.get_world_x(), self.player.get_world_y(), scale=3 )
         self.world_sprites.add( self.world )
 
         # initialize variable for direction object

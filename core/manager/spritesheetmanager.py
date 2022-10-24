@@ -1,8 +1,13 @@
 import pygame
 
 class SpritesheetManager():
-    def __init__( self, spritesheet, columns, rows ):
+    def __init__( self, spritesheet, columns, rows, scale=1 ):
         self.spritesheet = pygame.image.load( spritesheet )
+
+        # if there is a specific scale given, scale the whole spritesheet
+        if scale != 1:
+            self.spritesheet = pygame.transform.scale( self.spritesheet, (self.spritesheet.get_width() * scale, self.spritesheet.get_height() * scale ) )
+        
         self.width = self.spritesheet.get_width()
         self.height = self.spritesheet.get_height()
         self.rows = rows
