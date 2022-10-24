@@ -47,9 +47,9 @@ class Core:
         self.npc_sprites    = pygame.sprite.Group()
         self.player_sprites = pygame.sprite.Group()
  
-        # create elements at { 0, 0 }
-        # { 0, 0 } means the center of the display
-        self.player = Player( 1, 1 )
+        # ( 0, 0 ) means the center of the map
+        # this value represents the center of the drawed tiles
+        self.player = Player( 0, 0 )
         self.player_sprites.add( self.player )
 
         self.npc = NPC( 100, 100 )
