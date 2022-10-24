@@ -22,12 +22,10 @@ class World( pygame.sprite.Sprite ):
         self.world_x = world_x * self.spritesheet.get_tile_width()
         self.world_y = world_y * self.spritesheet.get_tile_height()
 
+        # fetch tiles
         self.ground_grass  = self.spritesheet.get_tile( 8, 3 )
         self.ground_stone0 = self.spritesheet.get_tile( 5, 8 )
         self.ground_stone1 = self.spritesheet.get_tile( 1, 4 )
-
-        self.tile_width  = self.spritesheet.get_tile_width() * scale
-        self.tile_height = self.spritesheet.get_tile_height() * scale
     
         self.image = pygame.Surface( ( self.spritesheet.get_tile_width() * len( self.world_map ), self.spritesheet.get_tile_height() * len( self.world_map ) ) ).convert_alpha()
 
