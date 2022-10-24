@@ -30,7 +30,7 @@ class Core:
             arg = 0
 
         # initialize configuration to display
-        self.screen = self.display.set_mode( ( self.width, self.height ), arg )
+        self.screen = self.display.set_mode( ( self.width, self.height ), arg, vsync=1 )
 
         # add GUI manager
         self.gui_manager = GUI( ( self.width, self.height ) )
@@ -49,7 +49,7 @@ class Core:
  
         # ( 0, 0 ) means the center of the map
         # this value represents the center of the drawed tiles
-        self.player = Player( 0, 0 )
+        self.player = Player( -1, -1 )
         self.player_sprites.add( self.player )
 
         #self.npc = NPC( 2, 2 )

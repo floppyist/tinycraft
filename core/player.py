@@ -4,7 +4,7 @@ from core.direction import Direction
 from core.manager.spritesheetmanager import SpritesheetManager
 
 class Player( pygame.sprite.Sprite ):
-    def __init__( self, world_x, world_y ):
+    def __init__( self, world_x, world_y, scale=1 ):
         super().__init__()
 
         self.world_x = world_x
@@ -14,7 +14,7 @@ class Player( pygame.sprite.Sprite ):
         self.sprites_current = []
 
         # load spritesheet
-        self.spritesheet = SpritesheetManager( 'sprites/player.png', 4, 8 )
+        self.spritesheet = SpritesheetManager( 'sprites/player.png', 4, 8, scale=scale )
 
         self.sprites_idle = []
         self.sprites_idle.append( self.spritesheet.get_tile( 0, 0 ) )
