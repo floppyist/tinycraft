@@ -10,7 +10,7 @@ class SpritesheetManager():
 
     # simple function which sets a grid based on the given rows and
     # columns on the spritesheet and return this specific cell as image
-    def get_image( self, select_x, select_y ):
+    def get_tile( self, select_x, select_y ):
         # needed rect size based on the given rows and columns
         rect_width = self.width / self.columns
         rect_height = self.height / self.rows
@@ -25,3 +25,11 @@ class SpritesheetManager():
         image.blit( self.spritesheet, ( 0, 0 ), rect )
 
         return image
+
+    # returns the tilewidth in pixels
+    def get_tile_width( self ):
+        return self.width / self.columns
+
+    # returns the tileheight in pixels
+    def get_tile_height( self ):
+        return self.height / self.rows

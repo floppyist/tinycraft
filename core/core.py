@@ -7,6 +7,7 @@ from core.player import Player
 from core.npc import NPC
 from core.direction import Direction
 from core.gui.command import Command
+from core.world.world import World
 
 class Core:
     def __init__( self ):
@@ -42,16 +43,20 @@ class Core:
         # these groups are layered by there initialization
         # TODO: for world building put the drawings before items, characters and so on
         # create sprite array to draw them together
-        self.npc_sprites = pygame.sprite.Group()
-        self.mov_sprites = pygame.sprite.Group()
-
-        self.npc = NPC( 50, 50 )
-        self.npc_sprites.add( self.npc )
-
-        # create player at { 0, 0 }
+        self.world_sprites  = pygame.sprite.Group()
+        self.npc_sprites    = pygame.sprite.Group()
+        self.player_sprites = pygame.sprite.Group()
+ 
+        # create elements at { 0, 0 }
         # { 0, 0 } means the center of the display
-        self.player = Player( 0, 0 )
-        self.mov_sprites.add( self.player )
+        self.player = Player( 1, 1 )
+        self.player_sprites.add( self.player )
+
+        self.npc = NPC( 100, 100 )
+        self.npc_sprites.add( self.npc )
+        
+        self.world = World( self.player.get_world_x(), self.player.get_world_y(), 3 )
+        self.world_sprites.add( self.world )
 
         # initialize variable for direction object
         self.direction = Direction
@@ -165,12 +170,16 @@ class Core:
             # TODO: need world design
             self.screen.fill( ( 34, 139, 34 ) )
 
+            # draw world first
+            self.world_sprites.update( self.movement_scroll_x, self.movement_scroll_y )
+            self.world_sprites.draw( self.screen )
+
             self.npc_sprites.update( self.direction, self.movement_scroll_x, self.movement_scroll_y )
             self.npc_sprites.draw( self.screen )
 
             # update and draw all sprites in list
-            self.mov_sprites.update( self.direction )
-            self.mov_sprites.draw( self.screen )
+            self.player_sprites.update( self.direction )
+            self.player_sprites.draw( self.screen )
 
             # set targeted framerate to 60
             # be careful changing this because all animations are bound to this (!)

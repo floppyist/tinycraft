@@ -4,8 +4,11 @@ from core.direction import Direction
 from core.manager.spritesheetmanager import SpritesheetManager
 
 class Player( pygame.sprite.Sprite ):
-    def __init__( self, pos_x, pos_y ):
+    def __init__( self, world_x, world_y ):
         super().__init__()
+
+        self.world_x = world_x
+        self.world_y = world_y
 
         # initialize current spriteset for switching animations
         self.sprites_current = []
@@ -14,55 +17,55 @@ class Player( pygame.sprite.Sprite ):
         self.spritesheet = SpritesheetManager( 'sprites/player.png', 4, 8 )
 
         self.sprites_idle = []
-        self.sprites_idle.append( self.spritesheet.get_image( 0, 0 ) )
+        self.sprites_idle.append( self.spritesheet.get_tile( 0, 0 ) )
 
         self.sprites_walk_south = []
-        self.sprites_walk_south.append( self.spritesheet.get_image( 0, 0 ) )
-        self.sprites_walk_south.append( self.spritesheet.get_image( 1, 0 ) )
-        self.sprites_walk_south.append( self.spritesheet.get_image( 2, 0 ) )
-        self.sprites_walk_south.append( self.spritesheet.get_image( 3, 0 ) )
+        self.sprites_walk_south.append( self.spritesheet.get_tile( 0, 0 ) )
+        self.sprites_walk_south.append( self.spritesheet.get_tile( 1, 0 ) )
+        self.sprites_walk_south.append( self.spritesheet.get_tile( 2, 0 ) )
+        self.sprites_walk_south.append( self.spritesheet.get_tile( 3, 0 ) )
 
         self.sprites_walk_west = []
-        self.sprites_walk_west.append( self.spritesheet.get_image( 0, 1 ) )
-        self.sprites_walk_west.append( self.spritesheet.get_image( 1, 1 ) )
-        self.sprites_walk_west.append( self.spritesheet.get_image( 2, 1 ) )
-        self.sprites_walk_west.append( self.spritesheet.get_image( 3, 1 ) )
+        self.sprites_walk_west.append( self.spritesheet.get_tile( 0, 1 ) )
+        self.sprites_walk_west.append( self.spritesheet.get_tile( 1, 1 ) )
+        self.sprites_walk_west.append( self.spritesheet.get_tile( 2, 1 ) )
+        self.sprites_walk_west.append( self.spritesheet.get_tile( 3, 1 ) )
 
         self.sprites_walk_east = []
-        self.sprites_walk_east.append( self.spritesheet.get_image( 0, 2 ) )
-        self.sprites_walk_east.append( self.spritesheet.get_image( 1, 2 ) )
-        self.sprites_walk_east.append( self.spritesheet.get_image( 2, 2 ) )
-        self.sprites_walk_east.append( self.spritesheet.get_image( 3, 2 ) )
+        self.sprites_walk_east.append( self.spritesheet.get_tile( 0, 2 ) )
+        self.sprites_walk_east.append( self.spritesheet.get_tile( 1, 2 ) )
+        self.sprites_walk_east.append( self.spritesheet.get_tile( 2, 2 ) )
+        self.sprites_walk_east.append( self.spritesheet.get_tile( 3, 2 ) )
 
         self.sprites_walk_north = []
-        self.sprites_walk_north.append( self.spritesheet.get_image( 0, 3 ) )
-        self.sprites_walk_north.append( self.spritesheet.get_image( 1, 3 ) )
-        self.sprites_walk_north.append( self.spritesheet.get_image( 2, 3 ) )
-        self.sprites_walk_north.append( self.spritesheet.get_image( 3, 3 ) )
+        self.sprites_walk_north.append( self.spritesheet.get_tile( 0, 3 ) )
+        self.sprites_walk_north.append( self.spritesheet.get_tile( 1, 3 ) )
+        self.sprites_walk_north.append( self.spritesheet.get_tile( 2, 3 ) )
+        self.sprites_walk_north.append( self.spritesheet.get_tile( 3, 3 ) )
 
         self.sprites_walk_southeast = []
-        self.sprites_walk_southeast.append( self.spritesheet.get_image( 0, 4 ) )
-        self.sprites_walk_southeast.append( self.spritesheet.get_image( 1, 4 ) )
-        self.sprites_walk_southeast.append( self.spritesheet.get_image( 2, 4 ) )
-        self.sprites_walk_southeast.append( self.spritesheet.get_image( 3, 4 ) )
+        self.sprites_walk_southeast.append( self.spritesheet.get_tile( 0, 4 ) )
+        self.sprites_walk_southeast.append( self.spritesheet.get_tile( 1, 4 ) )
+        self.sprites_walk_southeast.append( self.spritesheet.get_tile( 2, 4 ) )
+        self.sprites_walk_southeast.append( self.spritesheet.get_tile( 3, 4 ) )
 
         self.sprites_walk_southwest = []
-        self.sprites_walk_southwest.append( self.spritesheet.get_image( 0, 5 ) )
-        self.sprites_walk_southwest.append( self.spritesheet.get_image( 1, 5 ) )
-        self.sprites_walk_southwest.append( self.spritesheet.get_image( 2, 5 ) )
-        self.sprites_walk_southwest.append( self.spritesheet.get_image( 3, 5 ) )
+        self.sprites_walk_southwest.append( self.spritesheet.get_tile( 0, 5 ) )
+        self.sprites_walk_southwest.append( self.spritesheet.get_tile( 1, 5 ) )
+        self.sprites_walk_southwest.append( self.spritesheet.get_tile( 2, 5 ) )
+        self.sprites_walk_southwest.append( self.spritesheet.get_tile( 3, 5 ) )
 
         self.sprites_walk_northwest = []
-        self.sprites_walk_northwest.append( self.spritesheet.get_image( 0, 6 ) )
-        self.sprites_walk_northwest.append( self.spritesheet.get_image( 1, 6 ) )
-        self.sprites_walk_northwest.append( self.spritesheet.get_image( 2, 6 ) )
-        self.sprites_walk_northwest.append( self.spritesheet.get_image( 3, 6 ) )
+        self.sprites_walk_northwest.append( self.spritesheet.get_tile( 0, 6 ) )
+        self.sprites_walk_northwest.append( self.spritesheet.get_tile( 1, 6 ) )
+        self.sprites_walk_northwest.append( self.spritesheet.get_tile( 2, 6 ) )
+        self.sprites_walk_northwest.append( self.spritesheet.get_tile( 3, 6 ) )
 
         self.sprites_walk_northeast = []
-        self.sprites_walk_northeast.append( self.spritesheet.get_image( 0, 7 ) )
-        self.sprites_walk_northeast.append( self.spritesheet.get_image( 1, 7 ) )
-        self.sprites_walk_northeast.append( self.spritesheet.get_image( 2, 7 ) )
-        self.sprites_walk_northeast.append( self.spritesheet.get_image( 3, 7 ) )
+        self.sprites_walk_northeast.append( self.spritesheet.get_tile( 0, 7 ) )
+        self.sprites_walk_northeast.append( self.spritesheet.get_tile( 1, 7 ) )
+        self.sprites_walk_northeast.append( self.spritesheet.get_tile( 2, 7 ) )
+        self.sprites_walk_northeast.append( self.spritesheet.get_tile( 3, 7 ) )
 
         # currently there is no idle animation, just one picture, so there is no need
         # to play an animation
@@ -81,7 +84,7 @@ class Player( pygame.sprite.Sprite ):
         y = ( ( pygame.display.get_surface().get_height() - self.image.get_height() ) / 2 )
 
         # positioning rect
-        self.rect.topleft = [ x + pos_x, y - pos_y ]
+        self.rect.topleft = [ x, y ]
 
     def update( self, direction ):
             if self.is_animating == True:
@@ -117,3 +120,9 @@ class Player( pygame.sprite.Sprite ):
         if self.is_animating == False:
             self.animation_step = 0
             self.image = self.sprites_current[ self.animation_step ]
+
+    def get_world_x( self ):
+        return self.world_x
+    
+    def get_world_y( self ):
+        return self.world_y
