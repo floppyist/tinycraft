@@ -23,14 +23,16 @@ class Core:
         self.fullscreen = config[ 'screen' ][ 'fullscreen' ]
 
         # FIXME: need better config processing
+        # pygame.SCALED flag *AND* vsync=True must be set to get vsync to work
+        # pygame.SCALED removes alpha-channel, this problem is solved in spritesheetmanager class
         if self.fullscreen:
-            arg = pygame.FULLSCREEN
+            arg0 = pygame.FULLSCREEN
         else:
-            # seems a bit hacky to me
-            arg = 0
-
+            arg0 = 0
+ 
         # initialize configuration to display
-        self.screen = self.display.set_mode( ( self.width, self.height ), arg, vsync=1 )
+        # vsync is now enabled by default
+        self.screen = self.display.set_mode( ( self.width, self.height ), pygame.SCALED | arg0, vsync=True )
 
         # add GUI manager
         self.gui_manager = GUI( ( self.width, self.height ) )
@@ -166,10 +168,6 @@ class Core:
             if self.isLeft and not self.isUp and self.isDown and not self.isRight:
                 self.direction = Direction.SOUTHWEST
 
-            # set screen background color
-            # TODO: need world design
-            self.screen.fill( ( 34, 139, 34 ) )
-
             # draw world first
             self.world_sprites.update( self.movement_scroll_x, self.movement_scroll_y )
             self.world_sprites.draw( self.screen )
@@ -184,7 +182,7 @@ class Core:
             # set targeted framerate to 60
             # be careful changing this because all animations are bound to this (!)
             # only use clock.tick once, because clock will not work correctly otherwise
-            self.time_delta = self.clock.tick( 60 )
+            self.time_delta = self.clock.tick()
 
             # update text
             # TODO: this should be done is manager class

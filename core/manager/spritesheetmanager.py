@@ -6,7 +6,7 @@ class SpritesheetManager():
 
         # if there is a specific scale given, scale the whole spritesheet
         if scale != 1:
-            self.spritesheet = pygame.transform.scale( self.spritesheet, (self.spritesheet.get_width() * scale, self.spritesheet.get_height() * scale ) )
+            self.spritesheet = pygame.transform.scale( self.spritesheet, ( self.spritesheet.get_width() * scale, self.spritesheet.get_height() * scale ) )
         
         self.width = self.spritesheet.get_width()
         self.height = self.spritesheet.get_height()
@@ -24,7 +24,8 @@ class SpritesheetManager():
         rect = pygame.Rect( ( select_x * rect_width, select_y * rect_height, rect_width, rect_height ) )
 
         # create surface for drawing the image
-        image = pygame.Surface( rect.size ).convert_alpha()
+        # flag SRCALPHA have to been set because if using SCALE flag doesn't accept .convert_alpha()
+        image = pygame.Surface( rect.size, pygame.SRCALPHA )
 
         # print the image on the rectangle
         image.blit( self.spritesheet, ( 0, 0 ), rect )
