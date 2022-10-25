@@ -24,7 +24,7 @@ class SpritesheetManager():
         rect = pygame.Rect( ( select_x * rect_width, select_y * rect_height, rect_width, rect_height ) )
 
         # create surface for drawing the image
-        # flag SRCALPHA have to been set because if using SCALE flag doesn't accept .convert_alpha()
+        # flag SRCALPHA have to been set because if using SCALE on display, flag doesn't accept .convert_alpha()
         image = pygame.Surface( rect.size, pygame.SRCALPHA )
 
         # print the image on the rectangle
@@ -32,10 +32,10 @@ class SpritesheetManager():
 
         return image
 
-    # returns the tilewidth in pixels
+    # returns the tilewidth in pixels WITH scaling
     def get_tile_width( self ):
         return self.width / self.columns
 
-    # returns the tileheight in pixels
+    # returns the tileheight in pixels WITH scaling
     def get_tile_height( self ):
         return self.height / self.rows

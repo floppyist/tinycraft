@@ -12,9 +12,6 @@ class GUI( pygame_gui.UIManager ):
         self.ui_elements = []
 
         # TODO: needs too be much more complex in case of managing and answering requests
-        # FIXME: currently the draw_ui function draws all elements
-        # TODO: maybe create everything just with hide flag?
-        # TODO: create seperate classes, especially for console which will gain a lot of complexity
         self.fpsclock = FPSClock( relative_rect = pygame.Rect( ( 0, 0 ), ( 50, 50 ) ), text='', manager=self )
         self.console = Console( rect = pygame.Rect( ( 0, 30 ), ( 500, 300 ) ), manager=self, window_title='Tinycraft - devTerminal' )
         
@@ -26,10 +23,11 @@ class GUI( pygame_gui.UIManager ):
         for element in self.ui_elements:
             element.hide()
 
-    # TODO: why is this function only working correctly if return False is outside of foor loop?
+    # shows or hides the mouse pointer depending on at least one opened ui element
     def isActive( self ):
         for element in self.ui_elements:
-            if element.visible == 1:
+            # if selected element is active show mouse pointer
+            if element.visible == 1 and element != self.fpsclock:
                 pygame.mouse.set_visible( True )
                 return True
 

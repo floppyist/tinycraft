@@ -8,8 +8,16 @@ class World( pygame.sprite.Sprite ):
     def __init__( self, world_x, world_y, scale=1 ):
         super().__init__()
 
-        MAP_WIDTH  = 37
-        MAP_HEIGHT = 37
+        MAP_WIDTH  = 64
+        MAP_HEIGHT = 64
+
+        # the map should have always have a center at ( 0, 0 )
+        # this only applies if the given width and height divided by 2 have no
+        # remainder
+        if MAP_WIDTH % 2 == 0:
+            MAP_WIDTH += 1
+        if MAP_HEIGHT % 2 == 0:
+            MAP_HEIGHT += 1
 
         # TODO: next step is to convert this into tilesets
         self.world_map = np.random.randint( 7, size=( MAP_WIDTH, MAP_HEIGHT ) )
@@ -31,8 +39,9 @@ class World( pygame.sprite.Sprite ):
 
         # iterate through every element from worldmap and draw tiles based on random values created above
         for x in range( len( self.world_map ) ):
-            for y in range( len( self.world_map ) ):
-                element = self.world_map[y][x]
+            for y in range( len( self.world_map[x] ) ):
+                element = self.world_map[x][y]
+
                 if element == 1:
                     self.image.blit( self.ground_stone0, ( self.spritesheet.get_tile_width() * x, self.spritesheet.get_tile_height() * y ) )
                 elif element == 2:
@@ -41,7 +50,7 @@ class World( pygame.sprite.Sprite ):
                     self.image.blit( self.ground_grass, ( self.spritesheet.get_tile_width() * x, self.spritesheet.get_tile_height() * y ) )
 
                 # draw grid for every tile
-                #pygame.draw.rect( self.image, ( 0, 0, 0 ), ( 0, 0, self.spritesheet.get_tile_width() * ( x + 1 ), self.spritesheet.get_tile_height() * ( y + 1 ) ), 1 )
+                pygame.draw.rect( self.image, ( 0, 0, 0 ), ( 0, 0, self.spritesheet.get_tile_width() * ( x + 1 ), self.spritesheet.get_tile_height() * ( y + 1 ) ), 1 )
 
         # needed for parent class (like image)
         self.rect  = self.image.get_rect()

@@ -51,7 +51,7 @@ class Core:
  
         # ( 0, 0 ) means the center of the map
         # this value represents the center of the drawed tiles
-        self.player = Player( -1, -1 )
+        self.player = Player( 0, 0 )
         self.player_sprites.add( self.player )
 
         #self.npc = NPC( 2, 2 )
@@ -72,16 +72,16 @@ class Core:
     # the game loop
     def run( self ):
         while True:
+            # TODO: this should happen in the fpsclock clock itself
             fps = str( round( self.clock.get_fps() ) )
 
             # event handling needs a seperate object
             # some basic event handling
             for event in pygame.event.get():
-                # check is [CMD] + [Q] was pressed
+                # check if the os send some terminal sequences
                 if event.type == pygame.QUIT:
-                    # if true, leave loop
                     return
-                # handler for keydown-events
+                # handler for keydown-events (noticed once pressed not while pressed)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_HASH:
                         # switch for fps clock
