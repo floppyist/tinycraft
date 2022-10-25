@@ -8,19 +8,15 @@ class World( pygame.sprite.Sprite ):
     def __init__( self, world_x, world_y, scale=1 ):
         super().__init__()
 
-        MAP_WIDTH  = 64
-        MAP_HEIGHT = 64
-
-        # the map should have always have a center at ( 0, 0 )
-        # this only applies if the given width and height divided by 2 have no
-        # remainder
-        if MAP_WIDTH % 2 == 0:
-            MAP_WIDTH += 1
-        if MAP_HEIGHT % 2 == 0:
-            MAP_HEIGHT += 1
-
-        # TODO: next step is to convert this into tilesets
-        self.world_map = np.random.randint( 7, size=( MAP_WIDTH, MAP_HEIGHT ) )
+        self.world_map = [
+            [ 1, 1, 1, 3, 5 ],
+            [ 2, 3, 5, 1],
+            [ 0, 0, 1 ],
+            [ 0, 0, 0, 1, 1 ],
+            [ 1, 1, 1, 1, 1 ],
+            [ 0, 5, 3, 3, 3 ],
+            [ 0, 5, 3, 3, 3 ]
+        ]
 
         self.spritesheet = SpritesheetManager( 'sprites/world_grass.png', 16, 16, scale=scale )
         
@@ -35,12 +31,13 @@ class World( pygame.sprite.Sprite ):
         self.ground_stone1 = self.spritesheet.get_tile( 1, 4 )
     
         # create surface to draw tiles on with the length and hight if one tile multiplied by rows and columns
-        self.image = pygame.Surface( ( self.spritesheet.get_tile_width() * len( self.world_map ), self.spritesheet.get_tile_height() * len( self.world_map ) ) ).convert_alpha()
+        #                                                                       _________________ this should be the biggest array length in the array itself
+        self.image = pygame.Surface( ( self.spritesheet.get_tile_width() * len( self.world_map[0] ), self.spritesheet.get_tile_height() * len( self.world_map ) ) )
 
         # iterate through every element from worldmap and draw tiles based on random values created above
-        for x in range( len( self.world_map ) ):
-            for y in range( len( self.world_map[x] ) ):
-                element = self.world_map[x][y]
+        for y in range( len( self.world_map ) ):
+            for x in range( len( self.world_map[ y ] ) ):
+                element = self.world_map[y][x]
 
                 if element == 1:
                     self.image.blit( self.ground_stone0, ( self.spritesheet.get_tile_width() * x, self.spritesheet.get_tile_height() * y ) )
@@ -57,8 +54,7 @@ class World( pygame.sprite.Sprite ):
 
         # coords for the absolute center
         self.x = ( pygame.display.get_surface().get_width()  - self.image.get_width() )  / 2
-
-        # needed because the player sprite should stand with the feet at coords ( 0, 0 )
+        # needed because the player sprite should stand with the feet at the center of the tile
         self.y = ( ( pygame.display.get_surface().get_height() - self.image.get_height() ) / 2 ) + ( self.spritesheet.get_tile_height() / 2 )
 
     # just updates the movement of the player sprite

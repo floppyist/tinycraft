@@ -1,6 +1,6 @@
 import pygame
 
-from core.direction import Direction
+from core.animation import Animation
 from core.manager.spritesheetmanager import SpritesheetManager
 
 class NPC( pygame.sprite.Sprite ):

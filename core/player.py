@@ -1,6 +1,6 @@
 import pygame
 
-from core.direction import Direction
+from core.animation import Animation
 from core.manager.spritesheetmanager import SpritesheetManager
 
 class Player( pygame.sprite.Sprite ):
@@ -86,7 +86,7 @@ class Player( pygame.sprite.Sprite ):
         # positioning rect
         self.rect.topleft = [ x, y ]
 
-    def update( self, direction ):
+    def update( self, animation ):
         if self.is_animating == True:
             # use a low number which will converted to int later which produces the
             # following logic: { 0.x -> 0 | 1.x -> 1 }
@@ -95,21 +95,21 @@ class Player( pygame.sprite.Sprite ):
             if self.animation_step >= len( self.sprites_current ):
                 self.animation_step = 0
             
-        if direction == Direction.WEST:
+        if animation == Animation.WEST:
             self.sprites_current = self.sprites_walk_west
-        if direction == Direction.EAST:
+        if animation == Animation.EAST:
             self.sprites_current = self.sprites_walk_east
-        if direction == Direction.NORTH:
+        if animation == Animation.NORTH:
             self.sprites_current = self.sprites_walk_north
-        if direction == Direction.SOUTH:
+        if animation == Animation.SOUTH:
             self.sprites_current = self.sprites_walk_south
-        if direction == Direction.NORTHWEST:
+        if animation == Animation.NORTHWEST:
             self.sprites_current = self.sprites_walk_northwest
-        if direction == Direction.NORTHEAST:
+        if animation == Animation.NORTHEAST:
             self.sprites_current = self.sprites_walk_northeast
-        if direction == Direction.SOUTHWEST:
+        if animation == Animation.SOUTHWEST:
             self.sprites_current = self.sprites_walk_southwest
-        if direction == Direction.SOUTHEAST:
+        if animation == Animation.SOUTHEAST:
             self.sprites_current = self.sprites_walk_southeast
 
         self.image = self.sprites_current[ int( self.animation_step ) ]

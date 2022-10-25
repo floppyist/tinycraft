@@ -27,7 +27,7 @@ class GUI( pygame_gui.UIManager ):
     def isActive( self ):
         for element in self.ui_elements:
             # if selected element is active show mouse pointer
-            if element.visible == 1 and element != self.fpsclock:
+            if element.visible == 1 and element.blocking:
                 pygame.mouse.set_visible( True )
                 return True
 

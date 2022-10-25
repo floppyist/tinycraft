@@ -1,6 +1,6 @@
 from enum import Enum
 
-class Direction( Enum ):
+class Animation( Enum ):
     IDLE = 0
     WEST = 1
     EAST = 2

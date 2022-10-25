@@ -5,7 +5,7 @@ from core.config import config
 from core.gui.gui import GUI
 from core.player import Player
 from core.npc import NPC
-from core.direction import Direction
+from core.animation import Animation
 from core.gui.command import Command
 from core.world.world import World
 
@@ -22,7 +22,7 @@ class Core:
         self.height     = config[ 'screen' ][ 'height' ]
         self.fullscreen = config[ 'screen' ][ 'fullscreen' ]
 
-        # FIXME: need better config processing
+        # TODO: need better config processing
         # pygame.SCALED flag *AND* vsync=True must be set to get vsync to work
         # pygame.SCALED removes alpha-channel, this problem is solved in spritesheetmanager class
         if self.fullscreen:
@@ -51,17 +51,18 @@ class Core:
  
         # ( 0, 0 ) means the center of the map
         # this value represents the center of the drawed tiles
-        self.player = Player( 0, 0 )
+        self.player = Player( 0, 0, scale=1 )
         self.player_sprites.add( self.player )
 
-        #self.npc = NPC( 2, 2 )
+        # FIXME: npc currently spawns relative to the player
+        #self.npc = NPC( 100, 100 )
         #self.npc_sprites.add( self.npc )
         
         self.world = World( self.player.get_world_x(), self.player.get_world_y(), scale=3 )
         self.world_sprites.add( self.world )
 
         # initialize variable for direction object
-        self.direction = Direction
+        self.animation = Animation
 
         # different flags for direction-handling
         self.isLeft  = False
@@ -143,7 +144,7 @@ class Core:
 
                 # if no direction-button were pressed, change direction to idle
                 if not any( [ self.isLeft, self.isRight, self.isUp, self.isDown ] ):
-                    self.direction = Direction.IDLE
+                    self.animation = Animation.IDLE
                     self.player.animate( False )
                 else:
                     self.player.animate( True )
@@ -152,40 +153,42 @@ class Core:
             # check pressed buttons and select the correct direction
             # needed because northwest, southeast ... should be detected
             if self.isLeft and not self.isUp and not self.isDown and not self.isRight:
-                self.direction = Direction.WEST
+                self.animation = Animation.WEST
             if self.isRight and not self.isUp and not self.isDown and not self.isLeft:
-                self.direction = Direction.EAST
+                self.animation = Animation.EAST
             if self.isUp and not self.isRight and not self.isDown and not self.isLeft:
-                self.direction = Direction.NORTH
+                self.animation = Animation.NORTH
             if self.isDown and not self.isRight and not self.isLeft and not self.isUp:
-                self.direction = Direction.SOUTH
+                self.animation = Animation.SOUTH
             if self.isRight and self.isUp and not self.isDown and not self.isLeft:
-                self.direction = Direction.NORTHEAST
+                self.animation = Animation.NORTHEAST
             if self.isRight and not self.isUp and self.isDown and not self.isLeft:
-                self.direction = Direction.SOUTHEAST
+                self.animation = Animation.SOUTHEAST
             if self.isLeft and self.isUp and not self.isDown and not self.isRight:
-                self.direction = Direction.NORTHWEST
+                self.animation = Animation.NORTHWEST
             if self.isLeft and not self.isUp and self.isDown and not self.isRight:
-                self.direction = Direction.SOUTHWEST
+                self.animation = Animation.SOUTHWEST
+
+            # fill black background
+            self.screen.fill( ( 0, 0, 0 ) )
 
             # draw world first
             self.world_sprites.update( self.movement_scroll_x, self.movement_scroll_y )
             self.world_sprites.draw( self.screen )
 
-            self.npc_sprites.update( self.direction, self.movement_scroll_x, self.movement_scroll_y )
+            self.npc_sprites.update( self.animation, self.movement_scroll_x, self.movement_scroll_y )
             self.npc_sprites.draw( self.screen )
 
             # update and draw all sprites in list
-            self.player_sprites.update( self.direction )
+            self.player_sprites.update( self.animation )
             self.player_sprites.draw( self.screen )
 
-            # set targeted framerate to 60
+            # the targeted framerate is now depending on the monitors refresh rate to enable vsync
             # be careful changing this because all animations are bound to this (!)
             # only use clock.tick once, because clock will not work correctly otherwise
             self.time_delta = self.clock.tick()
 
-            # update text
-            # TODO: this should be done is manager class
+            # update fps text on fpsclock ui element
             self.gui_manager.fpsclock.set_text( fps )
 
             # update and draw all ui elements
