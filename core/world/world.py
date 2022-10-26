@@ -61,6 +61,7 @@ class World( pygame.sprite.Sprite ):
     def update( self, movement_scroll_x, movement_scroll_y ):
         self.rect.topleft = [ self.x - self.world_x + movement_scroll_x, self.y + self.world_y + movement_scroll_y ]
 
-    def load_at( self, world_x, world_y ):
-        self.world_x = world_x * self.spritesheet_ground.get_tile_width()
-        self.world_y = world_y * self.spritesheet_ground.get_tile_height()
+    # FIXME: player is always center for teleport, center should be the map itself instead
+    def load_at( self, world_x, world_y, movement_scroll_x, movement_scroll_y ):
+        self.world_x = world_x * self.spritesheet_ground.get_tile_width() + movement_scroll_x
+        self.world_y = world_y * self.spritesheet_ground.get_tile_height() - movement_scroll_y

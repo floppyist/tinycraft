@@ -101,8 +101,8 @@ class Tinycraft:
                             self.gui_manager.console.show()
                 
                 if event.type == pygame_gui.UI_CONSOLE_COMMAND_ENTERED:
-                    # TODO: define command handling here
-                    self.gui_manager.console.execute_command( event.command, self.world )
+                    # TODO: movement scroll should be optional
+                    self.gui_manager.console.execute_command( event.command, self.world, self.movement_scroll_x, self.movement_scroll_y )
 
                 # after checking necessary events process all gui events
                 # must be processed after key events to make console work properly
