@@ -17,6 +17,9 @@ class Console( pygame_gui.windows.UIConsoleWindow ):
                     tile_x = int( cmd[1] )
                     tile_y = int( cmd[2] )
                     world.load_at( tile_x, tile_y, movement_scroll_x, movement_scroll_y )
-                    self.add_output_line_to_log( f'teleported to tile ({tile_x}:{tile_y})' )
+                    self.add_output_line_to_log( f'player teleported to tile ({tile_x}:{tile_y})' )
+                if command == Command.WHERE:
+                    ( x, y ) = world.get_current_tile( movement_scroll_x, movement_scroll_y )
+                    self.add_output_line_to_log( f'you are on tile ({x}:{y})' )
         else:
             return
