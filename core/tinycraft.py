@@ -9,7 +9,7 @@ from core.animation import Animation
 from core.gui.command import Command
 from core.world.world import World
 
-class Core:
+class Tinycraft:
     def __init__( self ):
         pygame.init()
 
@@ -102,7 +102,7 @@ class Core:
                 
                 if event.type == pygame_gui.UI_CONSOLE_COMMAND_ENTERED:
                     # TODO: define command handling here
-                    print( event.command )
+                    self.gui_manager.console.execute_command( event.command, self.world )
 
                 # after checking necessary events process all gui events
                 # must be processed after key events to make console work properly
