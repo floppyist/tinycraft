@@ -4,8 +4,11 @@ from core.animation import Animation
 from core.manager.spritesheetmanager import SpritesheetManager
 
 class NPC( pygame.sprite.Sprite ):
-    def __init__( self, pos_x, pos_y ):
+    def __init__( self, world_x, world_y, scale=1 ):
         super().__init__()
+
+        self.world_x = world_x
+        self.world_y = world_y
 
         # initialize current spriteset for switching animations
         self.sprites_current = []
@@ -76,18 +79,15 @@ class NPC( pygame.sprite.Sprite ):
         self.image = self.sprites_current[ self.animation_step ]
         self.rect = self.image.get_rect()
 
-        self.pos_x = pos_x
-        self.pos_y = pos_y
-
         # calculate absolute center
-        self.x = ( ( pygame.display.get_surface().get_width() - self.image.get_width() ) / 2 )
-        self.y = ( ( pygame.display.get_surface().get_height() - self.image.get_height() ) / 2 )
+        self.x = ( ( pygame.display.get_surface().get_width() - self.image.get_width() ) / 2 ) + self.world_x * self.spritesheet.get_tile_width()
+        self.y = ( ( pygame.display.get_surface().get_height() - self.image.get_height() ) / 2 ) + self.world_y * self.spritesheet.get_tile_height()
 
         # positioning rect
-        self.rect.topleft = [ self.x + self.pos_x, self.y - self.pos_y ]
+        self.rect.topleft = [ self.x + self.world_x, self.y - self.world_y ]
 
     def update( self, direction, movement_scroll_x, movement_scroll_y ):
-            self.rect.topleft = [ self.x + self.pos_x + movement_scroll_x, self.y - self.pos_y + movement_scroll_y ]
+            self.rect.topleft = [ self.x + self.world_x + movement_scroll_x, self.y - self.world_y + movement_scroll_y ]
 
             if self.is_animating == True:
                 # use a low number which will converted to int later which produces the

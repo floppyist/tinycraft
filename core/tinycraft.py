@@ -55,7 +55,7 @@ class Tinycraft:
         self.player_sprites.add( self.player )
 
         # FIXME: npc currently spawns relative to the player
-        #self.npc = NPC( 100, 100 )
+        #self.npc = NPC( 1, 1 )
         #self.npc_sprites.add( self.npc )
         
         self.world = World( self.player.get_world_x(), self.player.get_world_y(), scale=3 )
@@ -88,8 +88,10 @@ class Tinycraft:
                         # switch for fps clock
                         if self.gui_manager.fpsclock.visible:
                             self.gui_manager.fpsclock.hide()
+                            self.gui_manager.tilecoords.hide()
                         else:            
                             self.gui_manager.fpsclock.show()
+                            self.gui_manager.tilecoords.show()
                             
                     if event.key == pygame.K_PLUS:
                         # switch for console
@@ -188,8 +190,12 @@ class Tinycraft:
             # only use clock.tick once, because clock will not work correctly otherwise
             self.time_delta = self.clock.tick()
 
-            # update fps text on fpsclock ui element
-            self.gui_manager.fpsclock.set_text( fps )
+            # update fps text on fpsclock
+            self.gui_manager.fpsclock.set_text( f' FPS: {fps}' )
+
+            # update current tile on tilecoords
+            ( tile_x, tile_y ) = self.world.get_current_tile( self.movement_scroll_x, self.movement_scroll_y )
+            self.gui_manager.tilecoords.set_text( f'Tile: [{tile_x}:{tile_y}]' )
 
             # update and draw all ui elements
             self.gui_manager.update( self.time_delta / 1000 )

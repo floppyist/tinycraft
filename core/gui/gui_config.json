@@ -1,0 +1,12 @@
+{
+    "label": {
+        "misc": {
+            "text_horiz_alignment": "left"
+        }
+    },
+    "window": {
+        "misc": {
+            "enable_close_button": "0"
+        }
+    }
+}

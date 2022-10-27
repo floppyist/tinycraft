@@ -1,6 +1,7 @@
 import pygame_gui
 
 from core.gui.command import Command
+from core.gui.command_description import CommandDescription
 
 class Console( pygame_gui.windows.UIConsoleWindow ):
     def __init__( self, rect, manager, window_title ):
@@ -20,6 +21,10 @@ class Console( pygame_gui.windows.UIConsoleWindow ):
                     self.add_output_line_to_log( f'player teleported to tile ({tile_x}:{tile_y})' )
                 if command == Command.WHERE:
                     ( x, y ) = world.get_current_tile( movement_scroll_x, movement_scroll_y )
-                    self.add_output_line_to_log( f'you are on tile ({x}:{y})' )
+                    self.add_output_line_to_log( f'you are now on tile ({x}:{y})' )
+                if command == Command.HELP:
+                    self.add_output_line_to_log( f'Tinycraft - devTerminal:')
+                    for command in Command:
+                        self.add_output_line_to_log( f'{command.value} - {CommandDescription[ command.name ].value}' )
         else:
             return

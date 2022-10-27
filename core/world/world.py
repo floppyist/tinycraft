@@ -8,14 +8,15 @@ class World( pygame.sprite.Sprite ):
     def __init__( self, world_x, world_y, scale=1 ):
         super().__init__()
 
+        # map must be uneven !
         self.world_map = [
             [ 1, 1, 1, 3, 5 ],
             [ 2, 3, 5, 1],
-            [ 0, 0, 1 ],
+            [ 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
             [ 0, 0, 0, 1, 1 ],
-            [ 1, 1, 1, 1, 1 ],
             [ 0, 5, 3, 3, 3 ],
-            [ 0, 5, 3, 3, 3 ]
+            [ 0, 5, 3, 3, 3, 999, 1, 2, 3, 3 ],
+            [ 0, 1, 1, 0 ]
         ]
 
         self.spritesheet_ground = SpritesheetManager( 'sprites/world_grass.png', 16, 16, scale=scale )
@@ -32,7 +33,7 @@ class World( pygame.sprite.Sprite ):
     
         # create surface to draw tiles on with the length and hight if one tile multiplied by rows and columns
         #                                                                       _________________ this should be the biggest array length in the array itself
-        self.image = pygame.Surface( ( self.spritesheet_ground.get_tile_width() * len( self.world_map[0] ), self.spritesheet_ground.get_tile_height() * len( self.world_map ) ) )
+        self.image = pygame.Surface( ( self.spritesheet_ground.get_tile_width() * len( self.world_map[2] ), self.spritesheet_ground.get_tile_height() * len( self.world_map ) ) )
 
         # iterate through every element from worldmap and draw tiles based on random values created above
         for y in range( len( self.world_map ) ):
