@@ -8,16 +8,16 @@ class World( pygame.sprite.Sprite ):
     def __init__( self, world_x, world_y, scale=1 ):
         super().__init__()
 
-        # map must be uneven !
-        self.world_map = [
-            [ 1, 1, 1, 3, 5 ],
-            [ 2, 3, 5, 1],
-            [ 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
-            [ 0, 0, 0, 1, 1 ],
-            [ 0, 5, 3, 3, 3 ],
-            [ 0, 5, 3, 3, 3, 999, 1, 2, 3, 3 ],
-            [ 0, 1, 1, 0 ]
-        ]
+        world_map_width  = random.randint( 0, 137 )
+        world_map_height = random.randint( 0, 137 )
+
+        # map must be uneven so that [0;0] is always the absolute center of the map
+        if world_map_width % 2  == 0: world_map_width  += 1
+        if world_map_height % 2 == 0: world_map_height += 1
+
+        self.world_map = []
+        self.world_map = [ [ random.randint( 0, 6 ) for y in range( world_map_height ) ] for x in range( world_map_width ) ]
+
 
         self.spritesheet_ground = SpritesheetManager( 'sprites/world_grass.png', 16, 16, scale=scale )
         
@@ -35,12 +35,16 @@ class World( pygame.sprite.Sprite ):
         #                                                                       _________________ this should be the biggest array length in the array itself
         self.image = pygame.Surface( ( self.spritesheet_ground.get_tile_width() * len( self.world_map[2] ), self.spritesheet_ground.get_tile_height() * len( self.world_map ) ) )
 
+        # TODO: only load tiles which are in range of the current players position to prevent OoMs
+        # TODO: use chunks (maybe 8x8) to load a "circle" of tiles around the player
         # iterate through every element from worldmap and draw tiles based on random values created above
         for y in range( len( self.world_map ) ):
             for x in range( len( self.world_map[ y ] ) ):
                 element = self.world_map[y][x]
 
-                if element == 1:
+                if element == 0:
+                    next
+                elif element == 1:
                     self.image.blit( self.ground_stone0, ( self.spritesheet_ground.get_tile_width() * x, self.spritesheet_ground.get_tile_height() * y ) )
                 elif element == 2:
                     self.image.blit( self.ground_stone1, ( self.spritesheet_ground.get_tile_width() * x, self.spritesheet_ground.get_tile_height() * y ) )

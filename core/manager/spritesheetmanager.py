@@ -13,10 +13,10 @@ class SpritesheetManager():
         self.rows = rows
         self.columns = columns
 
-    # simple function which sets a grid based on the given rows and
+    # simple function which sets a grid based on given rows and
     # columns on the spritesheet and return this specific cell as image
     def get_tile( self, select_x, select_y ):
-        # needed rect size based on the given rows and columns
+        # required rect size based on  given rows and columns
         rect_width = self.width / self.columns
         rect_height = self.height / self.rows
 
